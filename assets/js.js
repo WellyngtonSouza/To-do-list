@@ -34,3 +34,4 @@ function resultado() {
     input.value = ""; // reinicia o valor apoś a escolha
   }
 }
+//
