@@ -31,7 +31,7 @@ header {
     
 }
 
-.body-container #button {
+.body-container #button, .button {
     height :40px;
     width:100px;
     background-color:#fff;
@@ -54,17 +54,23 @@ header {
     width:400px;
     margin-top :50px;
     overflow:auto ;
+    display: block;
 }
 ul {
     list-style: none;
 }
 li {
      margin:10px;
+     display: flex;
 }
- span {
+ p {
      margin:10px;
+
+     
  }
-input[type=checkbox]:checked + span {
+ 
+
+input[type=checkbox]:checked + p {
     text-decoration:line-through;
     color: #a9a9a9;
     font-style: italic;
