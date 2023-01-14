@@ -16,6 +16,16 @@ header {
     margin-top:100px;
 }
 
+header h1 {
+    text-align: center;
+}
+
+.container {
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
 .body-container {
     margin-top :24px;
 }
@@ -75,6 +85,19 @@ input[type=checkbox]:checked + p {
     color: #a9a9a9;
     font-style: italic;
     
+}
+
+@media screen and (max-width: 600px) {
+    .container{
+        max-width: 300px;
+    }
+}
+
+
+@media screen and (max-width: 360px) {
+    .container{
+        max-width: 200px;
+    }
 }
 
 

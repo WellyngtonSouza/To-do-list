@@ -1,23 +1,52 @@
+// elementos HTML
+
 let input = document.querySelector("#input");
 let botao = document.querySelector("#button");
+let paiUl = document.querySelector("#list");
 
+// contador
+
+let cont;
+
+if(localStorage.getItem("numero") == null){
+  cont = 0;
+  
+
+}else{
+  cont = Number(JSON.parse(localStorage.getItem("numero")));
+  
+}
+
+//arrays
+
+let conteudoSalvo;
+let real;
+if(cont == 0){
+   conteudoSalvo = [];
+   real = []
+}else{
+   conteudoSalvo = JSON.parse(localStorage.getItem("stringone"))
+   real = JSON.parse(localStorage.getItem("storage"))
+}
+
+
+// eventos
 botao.addEventListener("click", resultado);
 input.addEventListener("keydown", tecla);
 
-function limpar() {
-  localStorage.clear();
-  alert("Reinicie a página (F5)")
-}
 
-let caixa = [];
-let caixaSalva = [];
-let conteudoSalvo;
 
+//funções
 function tecla(tecla) {
   if (tecla.which == 13) {
     resultado();
   }
   return tecla;
+}
+
+function limpar() {
+  localStorage.clear();
+  alert("Reinicie a página (F5)");
 }
 
 function criarElemento(conteudoFinal) {
@@ -37,34 +66,41 @@ function criarElemento(conteudoFinal) {
   content.innerHTML = conteudoFinal; //criando o conteúdo
   NovaLi.appendChild(content);
 }
-let paiUl = document.querySelector("#list"); /// ul
+
+function lstorage() {
+  return {
+    content: paiUl.children[i].children[1].innerText,
+  };
+}
+
+// contador
+
 function resultado() {
   if (input.value == input.value.length) {
     alert("por favor coloque um dado válido");
-  } else {
-
+  }
+  else {
     criarElemento(input.value);
-    input.value = ""; // reinicia o valor após a escolha
-
-    for (let i = 0; i < document.getElementsByTagName("li").length; i++) {
-      let conteudo = paiUl.children[i].children[1].innerText;
-      localStorage.setItem("conteudo", conteudo);
-
-      caixa[i] = localStorage.getItem("conteudo");
-
-      localStorage.setItem("caixa", caixa);
+    input.value = "";
+    for (i = cont; i < document.getElementsByTagName("li").length; i++) {
+      conteudoSalvo.push({
+        content: paiUl.children[i].children[1].innerText,
+      });
+      
     }
+    real.push(conteudoSalvo[conteudoSalvo.length - 1]);
+    cont++;
+
+    localStorage.setItem("stringone", JSON.stringify(conteudoSalvo));
+    localStorage.setItem("storage", JSON.stringify(real));
+    localStorage.setItem("numero", cont);
   }
 }
 
-caixaSalva = localStorage.getItem("caixa").split(",");
+if (localStorage.getItem("storage") !== null) {
+  let content = JSON.parse(localStorage.getItem("storage"));
 
-if (localStorage.getItem("conteudo") !== null) {
-  console.log("deu certo");
-  let inputLimpar = document.getElementById("limpar")
-  inputLimpar.style.display = "inline"
-  
-  for (let i = 0; i < caixaSalva.length; i++) {
-    criarElemento(caixaSalva[i])
+  for (let i = 0; i < content.length; i++) {
+    criarElemento(content[i].content);
   }
 }

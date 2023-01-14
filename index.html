@@ -8,19 +8,21 @@
     <link rel="stylesheet" href="./assets/css.css" />
   </head>
   <body>
-    <header><h1>To-do list</h1></header>
-    <div class="body-container">
-      <input
-        placeholder="Digite aqui a sua tarefa"
-        type="text"
-        id="input"
-        name="input"
-      />
-      <button id="button">Adicionar</button>
-      <button onclick="limpar()" id="limpar" class="button">limpar</button>
-    </div>
-    <div class="content">
-      <ul id="list"></ul>
+    <div class="container">
+      <header><h1>To-do list</h1></header>
+      <div class="body-container">
+        <input
+          placeholder="Digite aqui a sua tarefa"
+          type="text"
+          id="input"
+          name="input"
+        />
+        <button id="button">Adicionar</button>
+        <button onclick="limpar()" id="limpar" class="button">limpar</button>
+      </div>
+      <div class="content">
+        <ul id="list"></ul>
+      </div>
     </div>
   </body>
   <script src="./assets/js.js"></script>
