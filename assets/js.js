@@ -59,6 +59,16 @@ input.addEventListener("keydown", (click)=>{
   return click
 })
 
+let clear = function(){
+
+  document.querySelectorAll(".lists").forEach((element)=>{
+    $(element).fadeOut(1000)
+    setTimeout(()=>element.remove(), 1000)
+  })
+}
+
 
 buttonAdd.addEventListener("click", addElement)
+buttonClear.addEventListener("click", clear)
+
 
