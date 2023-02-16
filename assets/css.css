@@ -28,6 +28,7 @@ header h1 {
 
 .body-container {
     margin-top :24px;
+
 }
 
 .body-container #input {
@@ -81,7 +82,7 @@ header h1 {
     border-radius: 10px;
     box-shadow: 1px 3px 10px 5px #808080;
     transition: all;
-    transition-duration: 0.8s;
+    transition-duration: 0.5s;
 }
 ul {
     list-style: none;
