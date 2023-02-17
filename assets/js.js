@@ -3,49 +3,90 @@ const buttonClear = document.getElementById("limpar")
 const input = document.getElementById("input")
 
 let elementSave = []
-let lista; 
+let lista;
+let number;
 
 if (localStorage.getItem("value") != null) {
   let get = JSON.parse(localStorage.getItem("value"))
 
   elementSave = get
 
-  elementSave.forEach((element) => {
-    console.log(element.newObject)
+  elementSave.forEach((element, i) => {
     let ul = document.getElementById("list")
     let li = document.createElement("li")
     li.classList = "lists"
     li.innerHTML = `
       <input type="checkbox" />
-      <div class="contentLi" >${element.newObject}</div>
-      <div class="buttonDelete"><div/>
+      <div class="contentLi" >${element.valor}</div>
+      <div class="buttonDelete" id="${i}"><div/>
     `
     ul.appendChild(li)
 
-    let listaAdd = document.querySelectorAll(".lists")
+    lista = document.querySelectorAll(".lists")
 
-    listaAdd.forEach((element, i)=>{
-      element.children[0].addEventListener("click", () => {
-        if (element.children[0].checked == true) {
-          element.children[1].style.textDecoration = "line-through"
-        } else {
-          element.children[1].style.textDecoration = "none"
-        }
-      })
+    lista.forEach((element, i) => {
+      events(element, i)
 
-      lista = document.querySelectorAll(".lists")
     })
 
+    li.children[2].addEventListener("click", (element) => {
+
+      let elementFather = element.target.parentNode
+      let elementId = element.target.id
+
+
+
+      $(elementFather).fadeOut(500)
+      setTimeout(() => {
+        elementFather.remove()
+        let listNew = document.querySelectorAll(".lists")
+        listNew.forEach((ele, indexx) => {
+          ele.children[2].id = indexx
+        })
+        elementSave.splice(elementId, 1)
+      }, 1000)
+
+
+
+      localStorage.setItem("value", JSON.stringify(elementSave))
+    })
+
+
+
   })
-
-  
-
 }
 
 
-function newObject(newObject) {
+function events(el, index) {
+
+  let checkbox = el.children[0]
+  let contentLi = el.children[1]
+  let icon = el.children[2]
+
+  checkbox.addEventListener("click", () => {
+    if (checkbox.checked == true) {
+      contentLi.style.textDecoration = "line-through"
+
+    } else {
+      contentLi.style.textDecoration = "none"
+
+    }
+  })
+
+
+  // icon.addEventListener("click", (ok) => {
+  //   console.log(index)
+  //   $(el).fadeOut(500)
+  //   setTimeout(() => {
+  //     el.remove()
+  //   }, 500)
+  // })
+}
+
+function newObject(newObject, check) {
   return {
-    newObject
+    valor: newObject,
+    check: check
   }
 }
 
@@ -54,6 +95,7 @@ let addElement = function () {
     alert("não tem nenhum conteúdo no campo!!")
   }
   else {
+    let checkedOn = false;
     let ul = document.getElementById("list")
     let li = document.createElement("li")
     li.classList = "lists"
@@ -64,38 +106,45 @@ let addElement = function () {
     `
     ul.appendChild(li)
 
-    elementSave.push(newObject(li.children[1].textContent))
-
-    localStorage.setItem("value", JSON.stringify(elementSave))
-
     lista = document.querySelectorAll(".lists")
 
-    lista.forEach((element) => {
+    lista.forEach((element, i) => {
 
-      element.children[0].addEventListener("click", () => {
-        if (element.children[0].checked == true) {
-          element.children[1].style.textDecoration = "line-through"
-        } else {
-          element.children[1].style.textDecoration = "none"
-        }
-      })
-
-
-      element.children[2].addEventListener("click", () => {
-        
-        $(element).fadeOut(1000)
-        setTimeout(() => {
-          element.remove()
-        }, 1000)
-
-      })
+      li.children[2].setAttribute("id", i)
+      events(element, i)
     })
+
+    li.children[2].addEventListener("click", (element) => {
+      let elementFather = element.target.parentNode
+      let elementId = element.target.id
+
+      console.log(elementId)
+
+
+
+      $(elementFather).fadeOut(500)
+      setTimeout(() => {
+        elementFather.remove()
+        let listNew = document.querySelectorAll(".lists")
+        listNew.forEach((ele, indexx) => {
+          ele.children[2].id = indexx
+        })
+        
+      }, 1000)
+      elementSave.splice(elementId, 1)
+
+
+
+      localStorage.setItem("value", JSON.stringify(elementSave))
+    })
+
+    elementSave.push(newObject(li.children[1].textContent, checkedOn))
+
+    localStorage.setItem("value", JSON.stringify(elementSave))
 
     input.value = ""
     input.focus()
   }
-
-
 }
 
 input.addEventListener("keydown", (click) => {
@@ -115,7 +164,6 @@ let clearAll = function () {
     setTimeout(() => element.remove(), 1000)
   })
 }
-
 
 buttonAdd.addEventListener("click", addElement)
 buttonClear.addEventListener("click", clearAll)
