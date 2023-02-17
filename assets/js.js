@@ -3,9 +3,51 @@ const buttonClear = document.getElementById("limpar")
 const input = document.getElementById("input")
 
 let elementSave = []
-let lista;
-let number;
+let lista
+//constructor
+function newObject(newObject, check) {
+  return {
+    valor: newObject,
+    check: check
+  }
+}
+//style
+function events(content) {
 
+  let checkbox = content.children[0]
+  let contentLi = content.children[1]
+
+  checkbox.addEventListener("click", () => {
+    if (checkbox.checked == true) {
+      contentLi.style.textDecoration = "line-through"
+
+    } else {
+      contentLi.style.textDecoration = "none"
+
+    }
+  })
+
+}
+//delete
+function evenDelete(content) {
+  content.addEventListener("click", (element) => {
+    let elementFather = element.target.parentNode
+    let elementId = element.target.id
+
+    $(elementFather).fadeOut(500)
+    setTimeout(() => {
+      elementFather.remove()
+      let listNew = document.querySelectorAll(".lists")
+      listNew.forEach((ele, indexx) => {
+        ele.children[2].id = indexx
+      })
+
+    }, 1000)
+    elementSave.splice(elementId, 1)
+    localStorage.setItem("value", JSON.stringify(elementSave))
+  })
+}
+//localStorage
 if (localStorage.getItem("value") != null) {
   let get = JSON.parse(localStorage.getItem("value"))
 
@@ -25,71 +67,14 @@ if (localStorage.getItem("value") != null) {
     lista = document.querySelectorAll(".lists")
 
     lista.forEach((element, i) => {
-      events(element, i)
-
+      events(element)
     })
 
-    li.children[2].addEventListener("click", (element) => {
-
-      let elementFather = element.target.parentNode
-      let elementId = element.target.id
-
-
-
-      $(elementFather).fadeOut(500)
-      setTimeout(() => {
-        elementFather.remove()
-        let listNew = document.querySelectorAll(".lists")
-        listNew.forEach((ele, indexx) => {
-          ele.children[2].id = indexx
-        })
-        elementSave.splice(elementId, 1)
-      }, 1000)
-
-
-
-      localStorage.setItem("value", JSON.stringify(elementSave))
-    })
-
-
+    evenDelete(li.children[2])
 
   })
 }
-
-
-function events(el, index) {
-
-  let checkbox = el.children[0]
-  let contentLi = el.children[1]
-  let icon = el.children[2]
-
-  checkbox.addEventListener("click", () => {
-    if (checkbox.checked == true) {
-      contentLi.style.textDecoration = "line-through"
-
-    } else {
-      contentLi.style.textDecoration = "none"
-
-    }
-  })
-
-
-  // icon.addEventListener("click", (ok) => {
-  //   console.log(index)
-  //   $(el).fadeOut(500)
-  //   setTimeout(() => {
-  //     el.remove()
-  //   }, 500)
-  // })
-}
-
-function newObject(newObject, check) {
-  return {
-    valor: newObject,
-    check: check
-  }
-}
-
+//adicionando os elementos
 let addElement = function () {
   if (input.value == "") {
     alert("não tem nenhum conteúdo no campo!!")
@@ -114,47 +99,23 @@ let addElement = function () {
       events(element, i)
     })
 
-    li.children[2].addEventListener("click", (element) => {
-      let elementFather = element.target.parentNode
-      let elementId = element.target.id
-
-      console.log(elementId)
-
-
-
-      $(elementFather).fadeOut(500)
-      setTimeout(() => {
-        elementFather.remove()
-        let listNew = document.querySelectorAll(".lists")
-        listNew.forEach((ele, indexx) => {
-          ele.children[2].id = indexx
-        })
-        
-      }, 1000)
-      elementSave.splice(elementId, 1)
-
-
-
-      localStorage.setItem("value", JSON.stringify(elementSave))
-    })
+    evenDelete(li.children[2])
 
     elementSave.push(newObject(li.children[1].textContent, checkedOn))
-
     localStorage.setItem("value", JSON.stringify(elementSave))
 
     input.value = ""
     input.focus()
   }
 }
-
+//usando o enter pra adicionar os elementos no input
 input.addEventListener("keydown", (click) => {
   if (click.which == 13) {
     addElement()
   }
-
   return click
 })
-
+//limpar tudo
 let clearAll = function () {
   localStorage.clear("value")
   elementSave = []
@@ -167,5 +128,3 @@ let clearAll = function () {
 
 buttonAdd.addEventListener("click", addElement)
 buttonClear.addEventListener("click", clearAll)
-
-
