@@ -12,19 +12,21 @@ function newObject(newObject, check) {
   }
 }
 //style
-function events(content) {
-
+function events(content, ind) {
   let checkbox = content.children[0]
   let contentLi = content.children[1]
 
-  checkbox.addEventListener("click", () => {
-    if (checkbox.checked == true) {
+  checkbox.addEventListener("click", (clicked) => {
+    
+    if (clicked.target.checked == true) {
       contentLi.style.textDecoration = "line-through"
-
+      elementSave[ind].check = true
     } else {
       contentLi.style.textDecoration = "none"
-
+      elementSave[ind].check = false
     }
+
+    localStorage.setItem("value", JSON.stringify(elementSave))
   })
 
 }
@@ -52,7 +54,6 @@ if (localStorage.getItem("value") != null) {
   let get = JSON.parse(localStorage.getItem("value"))
 
   elementSave = get
-
   elementSave.forEach((element, i) => {
     let ul = document.getElementById("list")
     let li = document.createElement("li")
@@ -62,16 +63,19 @@ if (localStorage.getItem("value") != null) {
       <div class="contentLi" >${element.valor}</div>
       <div class="buttonDelete" id="${i}"><div/>
     `
-    ul.appendChild(li)
+    if(elementSave[i].check == true){
+      li.children[0].checked = true
+      li.children[1].style.textDecoration = "line-through"
+    }
 
+
+    ul.appendChild(li)
     lista = document.querySelectorAll(".lists")
 
-    lista.forEach((element, i) => {
-      events(element)
+    lista.forEach((element, ind) => {
+      events(element, ind)
     })
-
     evenDelete(li.children[2])
-
   })
 }
 //adicionando os elementos
